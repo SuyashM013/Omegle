@@ -38,6 +38,26 @@ io.on('connection', (socket) => {
         console.log(data)
     })
 
+    // video call ka part start
+
+    socket.on("signalingMessage", (data) => {
+        // console.log(data);
+        socket.broadcast.to(data.room).emit("signalingMessage", data.message)
+    })
+
+    socket.on("startVideoCall", ({room}) => {
+        // console.log(data);
+        socket.broadcast.to(room).emit("incommingcall")
+    })
+
+    socket.on("callAccepted", ({room}) => {
+        socket.broadcast.to(room).emit("callAccepted")
+    })
+
+    socket.on("rejectCall", ({room}) => {
+        socket.broadcast.to(room).emit("callRejected")
+    })
+
     socket.on("disconnect", () => {
         let index = waitingUsers.findIndex(user => user.id === socket.id)
         waitingUsers.splice(index, 1); // kis index se kitne hatana - 1 hatana
