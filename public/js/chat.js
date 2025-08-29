@@ -4,6 +4,7 @@ const chatform = document.querySelector("#chatform");
 const messageContainer = document.querySelector("#message-container");
 let room;
 
+// Room banaya 
 socket.emit("joinroom")
 socket.on("joined", function (roomname) {
     console.log("joined ");
@@ -13,10 +14,13 @@ socket.on("joined", function (roomname) {
 
 })
 
+// chats ka code yaha se chalu
+
+// Yh wala reciver ke lie backend se aya
 socket.on("message", function (message) {
     receiveMessage(message);
-    // attachMessage(message);
 })
+
 
 function attachMessage(message) {
     const userMessageContainer = document.createElement('div');
@@ -56,7 +60,7 @@ function receiveMessage(message) {
 }
 
 
-//id - #id
+//id - #id  , message frontend se bhej rahe backend 
 chatform.addEventListener("submit", function (e) {
     e.preventDefault();
     console.log(messagebox.value);

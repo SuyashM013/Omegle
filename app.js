@@ -8,19 +8,15 @@ const io = socketIO(server);
 
 let waitingUsers = [];
 let rooms = {
-
 }
 
 io.on('connection', (socket) => {
-    // console.log('A user connected');
 
-    // socket.on('disconnect', () => {
-    //     console.log('A user disconnected');
-    // });
 
+    // Room banaya and join kara rahe
     socket.on('joinroom', () => {
         // console.log('Room ke lie bhik')
-        if(waitingUsers.length > 0){
+        if (waitingUsers.length > 0) {
             let partner = waitingUsers.shift();
             const roomname = `${socket.id}-${partner}`;
 
@@ -28,16 +24,17 @@ io.on('connection', (socket) => {
             partner.join(roomname);
 
             io.to(roomname).emit('joined', roomname);
-            
+
 
         }
-        else{
+        else {
             waitingUsers.push(socket);
         }
     })
 
+    // Message send kara rahe
     socket.on("message", (data) => {
-       socket.broadcast.to(data.room).emit("message", data.message)
+        socket.broadcast.to(data.room).emit("message", data.message)
         console.log(data)
     })
 
