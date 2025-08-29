@@ -236,6 +236,7 @@ socket.on("callAccepted", function () {
     document.querySelector(".videoblock").classList.remove("hidden");
 })
 
+// reject kia to backend me bhej do
 document.querySelector("#reject-call")
     .addEventListener("click", function () {
         document.querySelector("#incoming-call").classList.add("hidden");
@@ -243,15 +244,18 @@ document.querySelector("#reject-call")
         socket.emit("callRejected", { room })
     })
 
+    // reject pr yh aya backend se
 socket.on("callRejected", function () {
     alert("Call rejected by other user");
 })
 
+// vc cut krna
 document.querySelector("#hangup")
     .addEventListener("click", function () {
         hangup();
     })
 
+    // vc cut krna hai to yh bhejo
 const hangup = () => {
     if (peerConnection) {
         peerConnection.close();

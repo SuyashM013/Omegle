@@ -45,15 +45,18 @@ io.on('connection', (socket) => {
         socket.broadcast.to(data.room).emit("signalingMessage", data.message)
     })
 
+    // vc start krna hai to req bhejo
     socket.on("startVideoCall", ({room}) => {
         // console.log(data);
         socket.broadcast.to(room).emit("incommingcall")
     })
 
+    // Call accept kia to yh bhej do
     socket.on("callAccepted", ({room}) => {
         socket.broadcast.to(room).emit("callAccepted")
     })
 
+    // Call reject kia to 
     socket.on("rejectCall", ({room}) => {
         socket.broadcast.to(room).emit("callRejected")
     })
