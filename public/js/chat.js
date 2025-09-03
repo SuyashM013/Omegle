@@ -2,12 +2,13 @@ const socket = io();
 const messagebox = document.querySelector("#messagebox");
 const chatform = document.querySelector("#chatform");
 const messageContainer = document.querySelector("#message-container");
+const skipbtn = document.querySelector("#skip-btn");
 let room;
 
 // Room banaya 
 socket.emit("joinroom")
 socket.on("joined", function (roomname) {
-    console.log("joined ");
+    alert("Joined in room");
     //class - .class
     room = roomname;
     document.querySelector(".nobody").classList.add("hidden");
@@ -178,7 +179,7 @@ const handleSignalingMessage = async (data) => {
             console.log(error);
         }
     }
-    else if(message.type === "hangup"){
+    else if (message.type === "hangup") {
         hangup()
     }
 }
@@ -244,9 +245,10 @@ document.querySelector("#reject-call")
         socket.emit("callRejected", { room })
     })
 
-    // reject pr yh aya backend se
+// reject pr yh aya backend se
 socket.on("callRejected", function () {
     alert("Call rejected by other user");
+    
 })
 
 // vc cut krna
@@ -255,7 +257,7 @@ document.querySelector("#hangup")
         hangup();
     })
 
-    // vc cut krna hai to yh bhejo
+// vc cut krna hai to yh bhejo
 const hangup = () => {
     if (peerConnection) {
         peerConnection.close();
@@ -267,4 +269,38 @@ const hangup = () => {
         inCall = false;
     }
 }
+
 // initialize();
+
+// skipbtn.addEventListener("click", function () {
+//     document.querySelector(".videoblock").classList.add("hidden");
+//     document.querySelector(".nobody").classList.remove("hidden");
+//     socket.emit("skip", { room })
+//     socket.emit('joinroom')
+// })
+
+// socket.on("skip", function () {
+//     document.querySelector(".videoblock").classList.add("hidden");
+//     document.querySelector(".nobody").classList.remove("hidden");
+//     socket.emit('joinroom')
+// })
+
+skipbtn.addEventListener("click", function () {
+    document.querySelector(".videoblock").classList.add("hidden");
+    document.querySelector(".nobody").classList.remove("hidden");
+    socket.emit("skip", { room });
+    socket.emit("joinroom");
+});
+
+// server will reply with "rejoin"
+socket.on("rejoin", () => {
+    socket.emit("joinroom");
+});
+
+socket.on("skip", function () {
+    alert("Partner skipped you");
+    document.querySelector(".videoblock").classList.add("hidden");
+    document.querySelector(".nobody").classList.remove("hidden");
+    socket.emit("joinroom"); // partner skipped you, so requeue immediately
+});
+
