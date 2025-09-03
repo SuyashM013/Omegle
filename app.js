@@ -7,8 +7,7 @@ const server = http.createServer(app);
 const io = socketIO(server);
 
 let waitingUsers = [];
-let rooms = {
-}
+let rooms = {}
 
 io.on('connection', (socket) => {
 
